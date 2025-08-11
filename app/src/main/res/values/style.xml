@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="default_font_family">
+        <item name="android:fontFamily">@font/allerta_stencil</item>
+    </style>
+    <style name="default_heading" parent="default_font_family">
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+</resources>
