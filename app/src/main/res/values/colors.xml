@@ -2,4 +2,31 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+        <!-- Primary brand colors -->
+        <color name="primaryColor">#FF6F00</color> <!-- Deep Orange -->
+        <color name="onPrimaryColor">#FFFFFF</color> <!-- Text/icons on primary -->
+
+        <!-- Secondary accent colors -->
+        <color name="secondaryColor">#FFA000</color> <!-- Amber-Orange -->
+        <color name="onSecondaryColor">#000000</color> <!-- Text/icons on secondary -->
+
+        <!-- Backgrounds -->
+        <color name="backgroundColor">#FFF3E0</color> <!-- Light orange background -->
+        <color name="onBackgroundColor">#212121</color> <!-- Text on background -->
+
+        <!-- Surface (cards, sheets, etc.) -->
+        <color name="surfaceColor">#FFFFFF</color>
+        <color name="onSurfaceColor">#212121</color>
+
+        <!-- Error colors -->
+        <color name="errorColor">#D32F2F</color>
+        <color name="onErrorColor">#FFFFFF</color>
+
+        <!-- Optional shades for variations -->
+        <color name="primaryLightColor">#FF8F00</color>
+        <color name="primaryDarkColor">#E65100</color>
+        <color name="secondaryLightColor">#FFB300</color>
+        <color name="secondaryDarkColor">#FF6F00</color>
+
+
 </resources>

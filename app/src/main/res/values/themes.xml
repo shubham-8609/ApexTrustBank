@@ -3,6 +3,25 @@
     <style name="Base.Theme.ApexTrustBank" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorOnPrimary">@color/onPrimaryColor</item>
+
+        <!-- Secondary -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorOnSecondary">@color/onSecondaryColor</item>
+
+        <!-- Background -->
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="colorOnBackground">@color/onBackgroundColor</item>
+
+        <!-- Surface -->
+        <item name="colorSurface">@color/surfaceColor</item>
+        <item name="colorOnSurface">@color/onSurfaceColor</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/errorColor</item>
+        <item name="colorOnError">@color/onErrorColor</item>
     </style>
 
     <style name="Theme.ApexTrustBank" parent="Base.Theme.ApexTrustBank" />
