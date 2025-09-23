@@ -26,13 +26,22 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
     buildFeatures {
         viewBinding = true
     }
+    android {
+        // ... other configurations ...
+
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11 // Or your desired Java version
+            targetCompatibility = JavaVersion.VERSION_11 // Or your desired Java version
+        }
+
+        kotlinOptions {
+            jvmTarget = "11" // Or the same version as sourceCompatibility
+        }
+    }
+
 }
 
 dependencies {
@@ -43,6 +52,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("com.airbnb.android:lottie:6.6.6")
     implementation("com.intuit.ssp:ssp-android:1.1.1")
+    implementation("com.intuit.sdp:sdp-android:1.1.1")
     implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
