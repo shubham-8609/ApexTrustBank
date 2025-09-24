@@ -11,6 +11,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="register_user_heading">Register new user</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="open_drawer">Open navigation drawer.</string>
+    <string name="close_drawer">Close navigation drawer.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    5de4r
 </resources>

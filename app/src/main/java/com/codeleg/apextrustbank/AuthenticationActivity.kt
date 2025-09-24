@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.codeleg.apextrustbank.databinding.ActivityAuthenticationBinding
 
-class AuthenticationActivity : AppCompatActivity(), ChooseSignIn.OnNavigationListener {
+class AuthenticationActivity : AppCompatActivity(), AuthenticationListener {
     private lateinit var binding: ActivityAuthenticationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +33,12 @@ class AuthenticationActivity : AppCompatActivity(), ChooseSignIn.OnNavigationLis
     }
 
     override fun navigateToSignIn() {
-        replaceFragment(SignIn())
+        replaceFragment(SignInFragment())
     }
 
     override fun navigateToRegister() {
-        replaceFragment(Register())
+        replaceFragment(RegisterFragment())
     }
+
+
 }

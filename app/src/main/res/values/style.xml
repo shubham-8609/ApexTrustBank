@@ -9,4 +9,10 @@
 
     </style>
 
+    <style name="drawer_item_design">
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="background">@color/primaryColor</item>
+
+    </style>
+
 </resources>

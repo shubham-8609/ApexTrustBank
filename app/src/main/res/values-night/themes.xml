@@ -22,5 +22,7 @@
         <!-- Error -->
         <item name="colorError">#CF6679</item>
         <item name="colorOnError">#000000</item>
+        <item name="android:fontFamily">@font/allerta_stencil</item>
+
     </style>
 </resources>

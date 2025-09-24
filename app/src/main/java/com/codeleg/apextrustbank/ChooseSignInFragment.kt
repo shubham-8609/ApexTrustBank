@@ -9,19 +9,16 @@ import android.view.ViewGroup
 import com.codeleg.apextrustbank.databinding.FragmentChooseSignInBinding
 import java.lang.ClassCastException
 
-class ChooseSignIn : Fragment() {
+class ChooseSignInFragment : Fragment() {
 
-    interface OnNavigationListener {
-        fun navigateToSignIn()
-        fun navigateToRegister()
-    }
 
-    private var listener: OnNavigationListener? = null
+
+    private var listener: AuthenticationListener? = null
     private lateinit var binding: FragmentChooseSignInBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnNavigationListener) {
+        if (context is AuthenticationListener) {
             listener = context
         } else {
             throw ClassCastException("$context must implement OnNavigationListener")
