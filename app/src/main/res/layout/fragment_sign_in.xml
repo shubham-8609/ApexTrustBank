@@ -71,6 +71,14 @@
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="Login"
                 android:textSize="@dimen/_16ssp" />
+            <TextView
+                android:id="@+id/register_page_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:textColor="@color/primaryColor"
+                android:layout_gravity="center"
+                android:text="Don't have Account? Register"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

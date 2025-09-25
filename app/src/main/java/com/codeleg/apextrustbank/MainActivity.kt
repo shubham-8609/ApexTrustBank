@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
         initViews()
         setupToolbarAndDrawer()
         setupNavigation()
@@ -58,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
     }
 
     private fun setupNavigation() {
@@ -65,6 +65,8 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.home_page_option -> replaceFragment(HomePageFragment())
                 R.id.transaction_option -> replaceFragment(TransactionFragment())
+                R.id.settings_option -> replaceFragment(SettingsFragment()
+                )
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true

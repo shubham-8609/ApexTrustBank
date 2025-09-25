@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    Transparent Background-->
+    <solid android:color="@color/toolbar_bg"/>
+<!--    Border-->
+<!--    <stroke-->
+<!--        android:width="@dimen/_3sdp"-->
+<!--        android:color="@color/primaryColor"/>-->
+<!--    Corners-->
+    <corners android:radius="@dimen/_25sdp"/>
+<!--    Padding-->
+
+
+</shape>

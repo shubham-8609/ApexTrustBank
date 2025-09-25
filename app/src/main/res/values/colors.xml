@@ -27,6 +27,7 @@
         <color name="primaryDarkColor">#E65100</color>
         <color name="secondaryLightColor">#FFB300</color>
         <color name="secondaryDarkColor">#FF6F00</color>
+        <color name="toolbar_bg">#d9d9d9</color>
 
 
 </resources>

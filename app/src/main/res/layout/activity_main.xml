@@ -20,12 +20,16 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
+            android:background="@drawable/toolbar_bg"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_height="wrap_content">
 
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_main_activity"
                 android:layout_width="match_parent"
+
+                app:titleTextColor="@color/primaryColor"
                 android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,9 +49,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/navigation_menu"
-        app:itemTextColor="@color/primaryColor"
-        app:itemTextAppearance="@style/drawer_item_design"
-        app:itemTextAppearanceActiveBoldEnabled="true"
+        app:itemTextAppearance="@style/DrawerItemDesign"
         app:headerLayout="@layout/navigation_header" />
 
 

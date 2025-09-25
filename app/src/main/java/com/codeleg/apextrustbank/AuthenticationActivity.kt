@@ -21,14 +21,14 @@ class AuthenticationActivity : AppCompatActivity(), AuthenticationListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
+        if (savedInstanceState == null) {
+            replaceFragment(SignInFragment())
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null) // Optional: Adds transaction to back stack
             .commit()
     }
 

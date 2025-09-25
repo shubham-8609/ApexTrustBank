@@ -9,10 +9,21 @@
 
     </style>
 
-    <style name="drawer_item_design">
-        <item name="android:textSize">@dimen/_15sdp</item>
-        <item name="background">@color/primaryColor</item>
+    <style name="DrawerItemDesign" parent="TextAppearance.AppCompat.Body1">
+        <!-- Font settings -->
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:fontFamily">@font/allerta_stencil</item> <!-- You can use Roboto, etc. -->
 
+        <!-- Background ripple -->
+        <item name="android:background">?attr/selectableItemBackground</item>
+
+        <!-- Extra padding for better spacing -->
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:layout_marginVertical">@dimen/_15sdp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
+
 
 </resources>

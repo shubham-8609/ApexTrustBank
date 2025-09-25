@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Account and  Security">
+        <EditTextPreference
+            android:key="change_password"
+            android:title="Change Password"
+            android:dialogTitle="Enter new password"
+            android:inputType="textPassword" />
+
+        <SwitchPreferenceCompat
+            android:key="biometric_login"
+            android:title="Enable Biometric Login"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notifications">
+        <SwitchPreferenceCompat
+            android:key="transaction_alerts"
+            android:title="Transaction Alerts"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="promo_notifications"
+            android:title="Promotional Notifications"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Appearance">
+        <SwitchPreferenceCompat
+            android:key="dark_mode"
+            android:title="Dark Mode"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="font_size"
+            android:title="Font Size"
+            android:defaultValue="medium"
+            android:entries="@array/font_size_options"
+            android:entryValues="@array/font_size_values" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="App Info">
+        <Preference
+            android:key="about_app"
+            android:title="About"
+            android:summary="Version 1.0.0 - Apex Trust Bank" />
+    </PreferenceCategory>
+</PreferenceScreen>

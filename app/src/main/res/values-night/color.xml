@@ -25,7 +25,8 @@
     <!-- Optional shades for variations -->
     <color name="primaryLightColor">#FF8F00</color>
     <color name="primaryDarkColor">#E65100</color>
-    <color name="secondaryLightColor">#FFB300</color>
+    <color name="secondaryLightColor">#666666</color>
+    <color name="toolbar_bg">#595959</color>
     <color name="secondaryDarkColor">#FF6F00</color>
 
 
