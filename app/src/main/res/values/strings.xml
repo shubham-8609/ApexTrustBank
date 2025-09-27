@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ApexTrustBank</string>
+    <string name="app_name">Apex Trust Bank</string>
     <string name="title_activity_authentication">Authentication</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

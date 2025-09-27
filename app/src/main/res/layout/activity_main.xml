@@ -28,8 +28,7 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_main_activity"
                 android:layout_width="match_parent"
-
-                app:titleTextColor="@color/primaryColor"
+                app:title="Dashboard"
                 android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
 

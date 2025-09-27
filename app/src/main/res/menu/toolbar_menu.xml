@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home_button"
+        android:title="Dashboard"
+        android:icon="@drawable/baseline_home_24"
+        android:iconTint="?attr/android:textColor"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/settings_option_toolbar"
+        android:title="Setings"
+        android:icon="@drawable/setting"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/ask_question_option"
+        android:title="Ask Question"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/exit_option"
+        android:title="Exit"
+        android:icon="@drawable/outline_exit_to_app_24"/>
+
+
+</menu>

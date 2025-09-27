@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#1d2b3a</color>
         <!-- Primary brand colors -->
         <color name="primaryColor">#FF6F00</color> <!-- Deep Orange -->
         <color name="onPrimaryColor">#FFFFFF</color> <!-- Text/icons on primary -->
