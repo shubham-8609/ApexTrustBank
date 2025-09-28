@@ -40,10 +40,32 @@
             android:entryValues="@array/font_size_values" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="App Info">
+    <PreferenceCategory android:title="About App And Developer">
         <Preference
             android:key="about_app"
             android:title="About"
             android:summary="Version 1.0.0 - Apex Trust Bank" />
+        <Preference
+            android:key="about_dev"
+            android:title="Developer"
+            android:summary="Shubham alias Codeleg " />
+
+        <Preference
+            android:key="github_link"
+            android:title="GitHub Repository"
+            android:icon="@drawable/ic_github"
+
+            android:summary="View the source code on GitHub">
+            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/shubham-8609/ApexTrustBank" />
+
+        </Preference>
+        <Preference
+            android:key="instagram_link"
+            android:title="Instagram Profile"
+            android:summary="Follow us on Instagram"
+            android:icon="@drawable/ic_instagram">
+            <intent android:action="android.intent.action.VIEW" android:data="https://www.instagram.com/ultramicro993" />
+
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.codeleg.apextrustbank.databinding.ActivityMainBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,13 +69,20 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.exit_option -> finishAffinity()
             R.id.ask_question_option -> {
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    setType("message/rfc822")
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = android.net.Uri.parse("mailto:") // Only email apps should handle this
                     putExtra(Intent.EXTRA_EMAIL , arrayOf("shubhamgupta8609@gmail.com"))
                     putExtra(Intent.EXTRA_SUBJECT , "Question from Apex Trust Bank")
                     putExtra(Intent.EXTRA_TEXT , "Hello, developers ,[Your Query]")
+                    setPackage("com.google.android.gm") // Target Gmail specifically
                 }
-                    startActivity(Intent.createChooser(intent , "Choose app to send mail..."))
+                try {
+                startActivity(intent)
+                } catch (e:Exception){
+                    Snackbar.make(binding.root, "No proper app to send mail", Snackbar.LENGTH_LONG).show()
+
+
+                }
             }
              R.id.settings_option_toolbar -> replaceFragment(SettingsFragment(), true)
 
