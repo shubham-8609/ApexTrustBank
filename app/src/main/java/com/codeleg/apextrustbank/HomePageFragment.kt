@@ -5,9 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
+import com.codeleg.apextrustbank.databinding.FragmentHomePageBinding
+import com.codeleg.apextrustbank.databinding.HomePageItemsBinding
+import com.google.android.material.card.MaterialCardView
 
 class HomePageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    lateinit var binding: HomePageItemsBinding
+   lateinit var depositCard: MaterialCardView
+   lateinit var withdrawCard: MaterialCardView
+   lateinit var transferCard: MaterialCardView
+
 
 
     override fun onCreateView(
@@ -15,6 +23,26 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_page, container, false)
+        binding = HomePageItemsBinding.inflate(inflater , container , false)
+        
+        depositCard = binding.cardDeposit
+        withdrawCard = binding.cardWithdraw
+        transferCard = binding.cardTransfer
+        depositCard.setOnClickListener {
+            DepositFragment().show(parentFragmentManager , "depositFragment")
+        }
+        withdrawCard.setOnClickListener {
+            WithdrawFragment().show(parentFragmentManager , "withdrawFragment" )
+        }
+        transferCard.setOnClickListener {
+            TransferFragment().show(parentFragmentManager , "transferFragment")
+        }
+        return binding.root // Return the bound view
     }
+   
+
+  
+
+
+
 }

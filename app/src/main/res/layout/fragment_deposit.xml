@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/onPrimaryColor"
+    android:paddingHorizontal="@dimen/_19sdp"
+    android:paddingVertical="@dimen/_28sdp"
+    tools:context=".DepositFragment">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/bottom_sheet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deposit Money"
+        android:textColor="@color/primaryColor"
+        android:textSize="@dimen/_19ssp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/_8sdp"/>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/bottom_sheet_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter the amount you want to deposit"
+        android:textColor="@color/secondaryColor"
+        android:textSize="@dimen/_13ssp"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/_14sdp"/>
+
+    <!-- Amount Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amount_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount"
+        android:paddingBottom="@dimen/_14sdp">
+
+
+    <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Confirm Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deposit"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="@color/white"
+        android:paddingVertical="@dimen/_7sdp"
+        app:cornerRadius="@dimen/_10sdp"/>
+
+</LinearLayout>
