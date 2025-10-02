@@ -21,9 +21,7 @@ class AuthenticationActivity : AppCompatActivity(), AuthenticationListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (savedInstanceState == null) {
-            replaceFragment(SignInFragment())
-        }
+        if (savedInstanceState == null) replaceFragment(SignInFragment())
     }
 
     private fun replaceFragment(fragment: Fragment) {

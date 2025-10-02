@@ -15,6 +15,7 @@ class HomePageFragment : Fragment() {
    lateinit var depositCard: MaterialCardView
    lateinit var withdrawCard: MaterialCardView
    lateinit var transferCard: MaterialCardView
+   lateinit var transactionCard: MaterialCardView
 
 
 
@@ -22,12 +23,12 @@ class HomePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = HomePageItemsBinding.inflate(inflater , container , false)
         
         depositCard = binding.cardDeposit
         withdrawCard = binding.cardWithdraw
         transferCard = binding.cardTransfer
+        transactionCard = binding.cardRecent
         depositCard.setOnClickListener {
             DepositFragment().show(parentFragmentManager , "depositFragment")
         }
@@ -37,7 +38,13 @@ class HomePageFragment : Fragment() {
         transferCard.setOnClickListener {
             TransferFragment().show(parentFragmentManager , "transferFragment")
         }
-        return binding.root // Return the bound view
+        transactionCard.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_container , TransactionFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        return binding.root
     }
    
 

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [User::class, Transaction::class], // Include all entities
     version = 1,
-    exportSchema = true  // Keep schema for versioning/migrations
+    exportSchema = false
 )
 abstract class DBHelper : RoomDatabase() {
 
@@ -17,22 +17,21 @@ abstract class DBHelper : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
 
     companion object {
-        private const val DATABASE_NAME = "apextrustdb"
+        private const val DATABASE_NAME = "apextrustbankdb"
+
+
 
         @Volatile
         private var INSTANCE: DBHelper? = null
 
-        fun getInstance(context: Context): DBHelper {
+        fun getDB(context: Context): DBHelper {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     DBHelper::class.java,
                     DATABASE_NAME
                 )
-                    // Optional: clears data if migration missing (good for dev only!)
                     .fallbackToDestructiveMigration()
-                    // Optional: allows queries on main thread (avoid in prod!)
-                    //.allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
                 instance

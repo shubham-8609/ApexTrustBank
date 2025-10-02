@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.security.MessageDigest
-import java.util.Base64
+import android.util.Base64
 import java.security.SecureRandom
 
 @Entity(tableName = "users")
@@ -34,7 +34,7 @@ data class User(
         fun hashPassword(password: String): String {
             val digest = MessageDigest.getInstance("SHA-256")
             val hashBytes = digest.digest(password.toByteArray(Charsets.UTF_8))
-            return Base64.getEncoder().encodeToString(hashBytes)
+            return Base64.encodeToString(hashBytes, Base64.NO_WRAP)
         }
 
         fun generateAccountNo(): String {
