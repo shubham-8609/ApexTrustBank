@@ -81,8 +81,12 @@ class  RegisterFragment : Fragment() {
 
                 if (userId > 0) {
                     DialogHelper.showSnacksbar(binding.root, "Registration successful")
+                    PrefsManager.saveLogin(requireContext(), userId.toInt())
                     // Navigate to main screen or login
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    val intent = Intent(requireActivity(), MainActivity::class.java).apply {
+                        putExtra("USER_ID", userId.toInt())  // send the new user ID
+                    }
+                    startActivity(intent)
                     requireActivity().finishAffinity()
                 } else {
                     DialogHelper.showSnacksbar(binding.root, "Registration failed")

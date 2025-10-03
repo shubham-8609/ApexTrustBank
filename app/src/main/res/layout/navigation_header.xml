@@ -36,9 +36,9 @@
                 android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Shubham Gupta"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="Shubham Gupta"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />

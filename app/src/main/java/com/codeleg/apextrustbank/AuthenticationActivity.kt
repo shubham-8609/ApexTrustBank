@@ -1,5 +1,6 @@
 package com.codeleg.apextrustbank
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,17 @@ class AuthenticationActivity : AppCompatActivity(), AuthenticationListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
+        if (PrefsManager.isLoggedIn(this)) {
+
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("USER_ID", PrefsManager.getUserId(this@AuthenticationActivity))
+            }
+            startActivity(intent)
+            finish()
+        }
+
+
+
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

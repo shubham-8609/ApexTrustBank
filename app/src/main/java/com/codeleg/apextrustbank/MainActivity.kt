@@ -1,69 +1,84 @@
 package com.codeleg.apextrustbank
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var db: DBHelper
+    private lateinit var userDao: UserDao
+    private lateinit var currentUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
         initViews()
         setupToolbar()
         setupDrawer()
         setupNavigation()
+        applyUserValues(savedInstanceState)
         setupBackPressHandler()
         setupFragmentListener()
-
-        if (savedInstanceState==null) replaceFragment(HomePageFragment())
     }
 
-    // -------------------- Initialization --------------------
     private fun initViews() {
         drawerLayout = binding.main
         navigationView = binding.navigationView
+        db = DBHelper.getDB(this)
+        userDao = db.userDao()
     }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbarMainActivity)
-
     }
 
-    // -------------------- Menu --------------------
-
-    override fun onCreateOptionsMenu(menu: Menu) =
-        menuInflater.inflate(R.menu.toolbar_menu, menu).let { true }
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-         when (item.itemId) {
-            R.id.home_button -> if (!isHomeFragmentVisible()) replaceFragment(HomePageFragment())
-            R.id.exit_option -> finishAffinity()
+        when (item.itemId) {
+            R.id.home_button -> if (!isHomeFragmentVisible()) {
+                if (::currentUser.isInitialized) {
+                    replaceFragment(HomePageFragment.newInstance(
+                        "₹ ${currentUser.balance}",
+                        "Acc No: ${currentUser.accountNo}",
+                        currentUser.username
+                    ))
+                } else {
+                    replaceFragment(HomePageFragment())
+                }
+            }
+            R.id.exit_option -> showExitDialog()
             R.id.ask_question_option ->
-                DialogHelper.sendEmail(this , binding.root , "Question from ApexTrustBank App" , "Hello Developers , [Your Quesry]")
+                DialogHelper.sendEmail(this, binding.root, "Question from ApexTrustBank App", "Hello Developers , [Your Query]")
             R.id.settings_option_toolbar -> replaceFragment(SettingsFragment(), true)
         }
         return true
     }
 
-    // -------------------- Drawer & Navigation --------------------
     private fun setupDrawer() {
         val toggle = ActionBarDrawerToggle(
             this,
@@ -80,11 +95,20 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home_page_option -> {
-                    replaceFragment(HomePageFragment(), false)
+                    if (::currentUser.isInitialized) {
+                        replaceFragment(HomePageFragment.newInstance(
+                            "₹ ${currentUser.balance}",
+                            "Acc No: ${currentUser.accountNo}",
+                            currentUser.username
+                        ), false)
+                    } else {
+                        replaceFragment(HomePageFragment(), false)
+                    }
                     updateToolbarTitle()
                 }
                 R.id.transaction_option -> replaceFragment(TransactionFragment(), true)
                 R.id.settings_option -> replaceFragment(SettingsFragment(), true)
+                R.id.logout_option -> showLogoutDialog()
             }
             menuItem.isChecked = true
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -92,34 +116,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // -------------------- Fragment Replacement --------------------
     private fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = false) {
-        val transaction = supportFragmentManager.beginTransaction().apply {
+        supportFragmentManager.beginTransaction().apply {
             setCustomAnimations(
-            android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right,
-            android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right
-        )
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right,
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
             replace(R.id.main_container, fragment)
-            if (addToBackStack)  addToBackStack(null)
+            if (addToBackStack) addToBackStack(null)
             commit()
         }
         updateToolbarTitle()
     }
 
-
     private fun updateToolbarTitle() {
-        val currentFragment =
-        supportActionBar?.title = when(supportFragmentManager.findFragmentById(R.id.main_container)) {
-                is HomePageFragment -> "Dashboard"
-                is TransactionFragment -> "Transaction History"
-                is SettingsFragment -> "Settings"
-                else -> "Apex Trust Bank"
+        supportActionBar?.title = when (supportFragmentManager.findFragmentById(R.id.main_container)) {
+            is HomePageFragment -> "Dashboard"
+            is TransactionFragment -> "Transaction History"
+            is SettingsFragment -> "Settings"
+            else -> "Apex Trust Bank"
         }
     }
 
-    // -------------------- Back Press --------------------
     private fun setupBackPressHandler() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -128,23 +148,101 @@ class MainActivity : AppCompatActivity() {
                         drawerLayout.closeDrawer(GravityCompat.START)
 
                     !isHomeFragmentVisible() -> {
-                        supportFragmentManager.popBackStack(null,androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                        replaceFragment(HomePageFragment(), false)
+                        supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                        if (::currentUser.isInitialized) {
+                            replaceFragment(HomePageFragment.newInstance(
+                                "₹ ${currentUser.balance}",
+                                "Acc No: ${currentUser.accountNo}",
+                                currentUser.username
+                            ), false)
+                        } else {
+                            replaceFragment(HomePageFragment(), false)
                         }
-                    else -> finishAffinity()
+                    }
+                    else -> showExitDialog()
                 }
             }
         })
     }
 
-
-    private fun isHomeFragmentVisible() =  supportFragmentManager.findFragmentById(R.id.main_container) is HomePageFragment
-
+    private fun isHomeFragmentVisible(): Boolean =
+        supportFragmentManager.findFragmentById(R.id.main_container) is HomePageFragment
 
     private fun setupFragmentListener() {
         supportFragmentManager.addOnBackStackChangedListener {
             updateToolbarTitle()
         }
     }
+
+    private fun applyUserValues(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) return
+        val userId = intent.getIntExtra("USER_ID", -1)
+        if (userId != -1) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                currentUser = userDao.getUserById(userId)!!
+                launch(Dispatchers.Main) {
+                    DialogHelper.showSnacksbar(binding.root, "Welcome ${currentUser.username}, Current Balance: ${currentUser.balance}")
+                    replaceFragment(HomePageFragment.newInstance(
+                        "₹ ${currentUser.balance}",
+                        "Acc No: ${currentUser.accountNo}",
+                        currentUser.username
+                    ))
+                    updateNavigationHeader()
+                }
+            }
+        } else {
+            replaceFragment(HomePageFragment())
+        }
+    }
+
+    private fun updateNavigationHeader() {
+        val headerView = navigationView.getHeaderView(0)
+        val userNameTextView = headerView.findViewById<TextView>(R.id.txtUserName)
+        val accountNoTextView = headerView.findViewById<TextView>(R.id.txtAccountNo)
+        val balanceTextView = headerView.findViewById<TextView>(R.id.txtBalance)
+
+        if (::currentUser.isInitialized) {
+            userNameTextView.text = currentUser.username
+            accountNoTextView.text = "A/C: ${currentUser.accountNo}"
+            balanceTextView.text = "₹ ${currentUser.balance}"
+        }
+    }
+
+    private fun showExitDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Exit App")
+        builder.setMessage("Are you sure you want to exit?")
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            dialog.dismiss()
+            finishAffinity() // ✅ Closes all activities
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.setCancelable(true)
+        builder.show()
+    }
+    private fun showLogoutDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.apply {
+            setTitle("Log out!")
+            setMessage("Are you sure you  want to log out ?")
+            setPositiveButton("Yes") {dialog , _ ->
+                logoutLogic()
+            }
+            setNegativeButton("No") {dialog, which ->
+                dialog.dismiss()
+            }.show()
+        }
+    }
+
+    private fun logoutLogic(){
+        PrefsManager.logout(this)
+        val intent = Intent(applicationContext, AuthenticationActivity()::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
 
 }

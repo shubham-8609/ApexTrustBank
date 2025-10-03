@@ -72,9 +72,11 @@
                         if (hashedInput == user.passwordHash) {
                             // ✅ Login success
                             DialogHelper.showSnacksbar(binding.root, "Login Successful")
-
+                            PrefsManager.saveLogin(requireActivity(), user.id)
                             // Navigate to main activity
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            val intent = Intent(requireActivity(), MainActivity::class.java).apply {
+                                putExtra("USER_ID", user.id)   // send ID here
+                            }
                             startActivity(intent)
                             requireActivity().finishAffinity()
                         } else {

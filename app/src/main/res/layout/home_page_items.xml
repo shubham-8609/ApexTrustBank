@@ -30,6 +30,7 @@
                 android:background="@drawable/bg_balance_card">
 
                 <TextView
+                    android:id="@+id/heading_card_user_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Welcome, John 👋"
@@ -55,6 +56,7 @@
                     android:layout_marginTop="@dimen/_4sdp" />
 
                 <TextView
+                    android:id="@+id/tv_account_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Acc No: **** 9821"
