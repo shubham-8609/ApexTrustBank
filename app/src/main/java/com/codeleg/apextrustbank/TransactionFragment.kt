@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codeleg.apextrustbank.databinding.FragmentTransactionBinding
+import java.util.Date
 
 class TransactionFragment : Fragment() {
     lateinit var binding: FragmentTransactionBinding
@@ -28,7 +29,7 @@ class TransactionFragment : Fragment() {
                     i,
                     i*5,
                     (100 + i * 10).toDouble(), // Example amount
-                    System.currentTimeMillis(),
+                    Date(),
                     "Deposit"
                 )
             )

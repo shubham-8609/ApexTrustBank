@@ -19,6 +19,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): User?
 
+    @Query("SELECT * FROM users WHERE accountNo = :accountNo LIMIT 1")
+    suspend fun getUserByAccountNo(accountNo: Long):User?
+
     // --- CREATE ---
     @Insert
     suspend fun insertUser(user:User): Long

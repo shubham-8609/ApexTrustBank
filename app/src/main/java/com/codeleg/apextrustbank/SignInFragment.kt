@@ -8,6 +8,7 @@
     import android.view.View
     import android.view.ViewGroup
     import android.widget.TextView
+    import android.widget.Toast
     import androidx.lifecycle.lifecycleScope
     import com.codeleg.apextrustbank.databinding.FragmentSignInBinding
     import kotlinx.coroutines.launch
@@ -52,7 +53,8 @@
             val username = usernameEditText.text.toString().trim()
             val password = passwordEditText.text.toString()
             if (username.isEmpty() || password.isEmpty()) {
-                DialogHelper.showSnacksbar(binding.root, "Please fill all the fields")
+                usernameEditText.error = "Fill all the fields"
+                passwordEditText.error = "Fill all the fields"
             } else {
                 login(username, password)
             }
@@ -66,7 +68,7 @@
                     val user = userDao.getUserByUsername(username)  // suspend call ✅
 
                     if (user == null) {
-                        DialogHelper.showSnacksbar(binding.root, "User not found!")
+                       passwordEditText.error = "User not found"
                     } else {
                         val hashedInput = User.hashPassword(password)
                         if (hashedInput == user.passwordHash) {
@@ -81,12 +83,12 @@
                             requireActivity().finishAffinity()
                         } else {
                             // ❌ Wrong password
-                            DialogHelper.showSnacksbar(binding.root, "Incorrect Password")
+                            passwordEditText.error =  "Incorrect Password"
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    DialogHelper.showSnacksbar(binding.root, "Error: ${e.message}")
+                    Toast.makeText(requireActivity(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.codeleg.apextrustbank
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "transactions")
 data class  Transaction(
@@ -10,6 +11,6 @@ data class  Transaction(
 
     val userId: Int,
     val amount: Double,
-    val timeStamp:Long,
+    val timeStamp: Date,
     val type: String
 )

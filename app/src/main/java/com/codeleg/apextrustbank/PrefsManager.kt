@@ -2,6 +2,8 @@ package com.codeleg.apextrustbank
 
 
 import android.content.Context
+import androidx.room.TypeConverter
+import java.util.Date
 
 object PrefsManager {
     private const val PREFS_NAME = "apextrust_prefs"
@@ -28,5 +30,14 @@ object PrefsManager {
     fun logout(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().clear().apply()
+    }
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
     }
 }

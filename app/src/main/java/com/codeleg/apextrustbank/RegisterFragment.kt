@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.FragmentRegisterBinding
@@ -55,9 +56,11 @@ class  RegisterFragment : Fragment() {
         val password = passwordEditText.text.toString()
         val confirmPassword = confirmPasswordEditText.text.toString()
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            DialogHelper.showSnacksbar(binding.root , "Please fill all the fields")
+            passwordEditText.error = "Please fill all the fields"
+                    usernameEditText.error = "Please fill all the fields"
+            confirmPasswordEditText.error = "Please fill all the fields"
         } else if (password != confirmPassword) {
-            DialogHelper.showSnacksbar(binding.root, "Passwords do not match")
+            confirmPasswordEditText.error = "Passwords do not match"
         } else {
             register(username , password)
         }
@@ -70,7 +73,7 @@ class  RegisterFragment : Fragment() {
                 // Check if username already exists
                 val existingUser = userDao.getUserByUsername(username)
                 if (existingUser != null) {
-                    DialogHelper.showSnacksbar(binding.root, "Username already taken")
+                    usernameEditText.error ="Username already taken"
                     return@launch
                 }
 
@@ -80,7 +83,6 @@ class  RegisterFragment : Fragment() {
                 val userId = userDao.insertUser(newUser)
 
                 if (userId > 0) {
-                    DialogHelper.showSnacksbar(binding.root, "Registration successful")
                     PrefsManager.saveLogin(requireContext(), userId.toInt())
                     // Navigate to main screen or login
                     val intent = Intent(requireActivity(), MainActivity::class.java).apply {
@@ -89,11 +91,11 @@ class  RegisterFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finishAffinity()
                 } else {
-                    DialogHelper.showSnacksbar(binding.root, "Registration failed")
+                    Toast.makeText(requireActivity() , "Registration failed" , Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                DialogHelper.showSnacksbar(binding.root, "Error: ${e.message}")
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
