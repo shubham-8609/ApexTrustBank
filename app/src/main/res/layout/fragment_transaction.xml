@@ -11,9 +11,19 @@
         android:id="@+id/transaction_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager
-"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
+    <TextView
+        android:id="@+id/tv_no_transactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_20ssp"
+        android:textColor="@color/primaryColor"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:text="No Transactions found!!"
+    />
 
 </LinearLayout>

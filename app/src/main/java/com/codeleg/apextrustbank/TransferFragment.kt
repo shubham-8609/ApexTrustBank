@@ -24,6 +24,11 @@ class TransferFragment : BottomSheetDialogFragment() {
     private lateinit var accountNoInput: TextInputEditText
     private lateinit var amountInput: TextInputEditText
     private lateinit var btnConfirm: MaterialButton
+    private var listener: UserValueUpdateListener? = null
+
+    fun setListener(listener: UserValueUpdateListener) {
+        this.listener = listener
+    }
 
     private var currentUser: User? = null
 
@@ -78,10 +83,6 @@ class TransferFragment : BottomSheetDialogFragment() {
         val accountNo = accountNoInput.text.toString().toIntOrNull()
         val amount = amountInput.text.toString().toDoubleOrNull()
 
-        if (accountNo == null || amount == null || amount <= 0) {
-            amountInput.error = "Invalid input"
-            return
-        }
 
         val sender = currentUser ?: run {
             DialogHelper.showSnacksbar(binding.root, "User not loaded yet")
@@ -89,7 +90,7 @@ class TransferFragment : BottomSheetDialogFragment() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val recipient = userDao.getUserByAccountNo(accountNo.toLong())
+            val recipient = userDao.getUserByAccountNo(accountNo!!.toLong())
 
             if (recipient == null) {
                 withContext(Dispatchers.Main) {
@@ -107,7 +108,7 @@ class TransferFragment : BottomSheetDialogFragment() {
             }
 
             // Check sufficient balance
-            if (sender.balance < amount) {
+            if (sender.balance < amount!!) {
                 withContext(Dispatchers.Main) {
                     amountInput.error = "Insufficient balance"
                 }
@@ -127,6 +128,7 @@ class TransferFragment : BottomSheetDialogFragment() {
 
             withContext(Dispatchers.Main) {
                 DialogHelper.showSnacksbar(binding.root, "₹$amount transferred successfully!")
+                listener?.onValueChanged()
                 dismiss() // close the bottom sheet
             }
         }

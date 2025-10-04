@@ -1,13 +1,11 @@
 package com.codeleg.apextrustbank
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Transaction
 import com.codeleg.apextrustbank.databinding.FragmentWithdrawBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -24,6 +22,11 @@ class WithdrawFragment : BottomSheetDialogFragment() {
     lateinit var amountInput: TextInputEditText
     lateinit var btnConfirm: MaterialButton
     lateinit var binding: FragmentWithdrawBinding
+    private var listener: UserValueUpdateListener? = null
+
+    fun setListener(listener: UserValueUpdateListener) {
+        this.listener = listener
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,15 +63,20 @@ class WithdrawFragment : BottomSheetDialogFragment() {
             amountInput.error = "Invalid amount"
         } else if (amount > 50000) {
             amountInput.error = "Amount exceeds limit"
+        } else if (user.balance < amount) {
+            amountInput.error = "Insufficient balance"
         } else {
-            viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 val newBalance = user.balance - amount
                 userDao.updateBalance(user.id , newBalance )
-                val transaction = Transaction(0 , user.id , amount , Date(), "withdraw")
+                val transaction = Transaction(0 , user.id , amount , Date(), "Withdraw")
                 transactionDao.insertTransaction(transaction)
+                launch(Dispatchers.Main) {
+                    listener?.onValueChanged()
+                }
             }
+            dismiss()
         }
-        dismiss()
 
     }
 

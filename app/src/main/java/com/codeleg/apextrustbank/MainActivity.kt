@@ -19,7 +19,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
@@ -181,7 +181,6 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 currentUser = userDao.getUserById(userId)!!
                 launch(Dispatchers.Main) {
-                    DialogHelper.showSnacksbar(binding.root, "Welcome ${currentUser.username}, Current Balance: ${currentUser.balance}")
                     replaceFragment(HomePageFragment.newInstance(
                         "₹ ${currentUser.balance}",
                         "Acc No: ${currentUser.accountNo}",
@@ -242,6 +241,11 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    override fun onValueChanged() {
+        applyUserValues(null)
+        updateNavigationHeader()
     }
 
 

@@ -52,7 +52,7 @@ class  RegisterFragment : Fragment() {
     }
 
     private fun checkInputs(){
-        val username = usernameEditText.text.toString().trim()
+        val username = usernameEditText.text.toString().trim().lowercase()
         val password = passwordEditText.text.toString()
         val confirmPassword = confirmPasswordEditText.text.toString()
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {

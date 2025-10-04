@@ -23,6 +23,11 @@ class DepositFragment : BottomSheetDialogFragment() {
     lateinit var binding: FragmentDepositBinding
     lateinit var tvAmountInput: TextInputEditText
     lateinit var btnConfirm: MaterialButton
+    private var listener: UserValueUpdateListener? = null
+
+    fun setListener(listener: UserValueUpdateListener) {
+        this.listener = listener
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +76,9 @@ class DepositFragment : BottomSheetDialogFragment() {
                         0, user.id, amount!!, Date(), "Deposit"
                     )
                 )
+                launch(Dispatchers.Main) {
+                    listener?.onValueChanged()
+                }
             }
             dismiss()
         }

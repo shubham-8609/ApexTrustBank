@@ -50,7 +50,7 @@
         }
 
         private fun checkInputs() {
-            val username = usernameEditText.text.toString().trim()
+            val username = usernameEditText.text.toString().trim().lowercase()
             val password = passwordEditText.text.toString()
             if (username.isEmpty() || password.isEmpty()) {
                 usernameEditText.error = "Fill all the fields"
@@ -65,14 +65,13 @@
             userDao = db.userDao()
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
-                    val user = userDao.getUserByUsername(username)  // suspend call ✅
+                    val user = userDao.getUserByUsername(username)
 
                     if (user == null) {
                        passwordEditText.error = "User not found"
                     } else {
                         val hashedInput = User.hashPassword(password)
                         if (hashedInput == user.passwordHash) {
-                            // ✅ Login success
                             DialogHelper.showSnacksbar(binding.root, "Login Successful")
                             PrefsManager.saveLogin(requireActivity(), user.id)
                             // Navigate to main activity
@@ -82,7 +81,6 @@
                             startActivity(intent)
                             requireActivity().finishAffinity()
                         } else {
-                            // ❌ Wrong password
                             passwordEditText.error =  "Incorrect Password"
                         }
                     }

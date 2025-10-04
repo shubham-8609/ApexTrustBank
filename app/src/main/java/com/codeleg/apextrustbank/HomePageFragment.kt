@@ -1,5 +1,6 @@
 package com.codeleg.apextrustbank
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.codeleg.apextrustbank.databinding.HomePageItemsBinding
 
-class HomePageFragment : Fragment() {
+class HomePageFragment : Fragment(), UserValueUpdateListener {
     private var _binding: HomePageItemsBinding? = null
     private val binding get() = _binding!!
+    private var listener: UserValueUpdateListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is UserValueUpdateListener) {
+            listener = context
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,13 +27,19 @@ class HomePageFragment : Fragment() {
         _binding = HomePageItemsBinding.inflate(inflater, container, false)
 
         binding.cardDeposit.setOnClickListener {
-            DepositFragment().show(parentFragmentManager, "depositFragment")
+            val depositFragment = DepositFragment()
+            depositFragment.setListener(this)
+            depositFragment.show(parentFragmentManager, "depositFragment")
         }
         binding.cardWithdraw.setOnClickListener {
-            WithdrawFragment().show(parentFragmentManager, "withdrawFragment")
+            val withdrawFragment = WithdrawFragment()
+            withdrawFragment.setListener(this)
+            withdrawFragment.show(parentFragmentManager, "withdrawFragment")
         }
         binding.cardTransfer.setOnClickListener {
-            TransferFragment().show(parentFragmentManager, "transferFragment")
+            val transferFragment = TransferFragment()
+            transferFragment.setListener(this)
+            transferFragment.show(parentFragmentManager, "transferFragment")
         }
         binding.cardRecent.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -47,6 +62,15 @@ class HomePageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    override fun onValueChanged() {
+        listener?.onValueChanged()
     }
 
     companion object {
