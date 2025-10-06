@@ -27,7 +27,13 @@ class TransactionAdapter(private val context: Context, private  val traansaction
 
         val transaction = traansactions[position]
         holder.tvTypeView.text = transaction.type
-        holder.tvAmountView.text = transaction.amount.toString()
+        if(transaction.type == "Deposit" || transaction.type == "Received") {
+            holder.tvAmountView.setTextColor(context.getColor(android.R.color.holo_green_dark))
+            holder.tvAmountView.text = "+${transaction.amount}"
+        } else {
+            holder.tvAmountView.setTextColor(context.getColor(R.color.errorColor))
+            holder.tvAmountView.text = "-${transaction.amount}"
+        }
 
 // ✅ timestamp is already a Date
         val format = SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault())

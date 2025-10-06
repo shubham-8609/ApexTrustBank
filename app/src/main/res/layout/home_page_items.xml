@@ -247,6 +247,7 @@
 
             <!-- Example transaction item -->
             <TextView
+                android:id="@+id/tv_last_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="• Paid ₹500 to Amazon"
@@ -255,6 +256,7 @@
                 android:padding="@dimen/_6sdp" />
 
             <TextView
+                android:id="@+id/tv_sc_last_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="• Received ₹1200 from Rahul"

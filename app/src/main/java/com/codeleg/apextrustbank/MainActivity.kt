@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                     replaceFragment(HomePageFragment.newInstance(
                         "₹ ${currentUser.balance}",
                         "Acc No: ${currentUser.accountNo}",
-                        currentUser.username
+                        currentUser.username,
+                        currentUser.id
                     ))
                 } else {
                     replaceFragment(HomePageFragment())
@@ -99,7 +100,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                         replaceFragment(HomePageFragment.newInstance(
                             "₹ ${currentUser.balance}",
                             "Acc No: ${currentUser.accountNo}",
-                            currentUser.username
+                            currentUser.username,
+                            currentUser.id
                         ), false)
                     } else {
                         replaceFragment(HomePageFragment(), false)
@@ -153,7 +155,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                             replaceFragment(HomePageFragment.newInstance(
                                 "₹ ${currentUser.balance}",
                                 "Acc No: ${currentUser.accountNo}",
-                                currentUser.username
+                                currentUser.username,
+                                currentUser.id
                             ), false)
                         } else {
                             replaceFragment(HomePageFragment(), false)
@@ -184,7 +187,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                     replaceFragment(HomePageFragment.newInstance(
                         "₹ ${currentUser.balance}",
                         "Acc No: ${currentUser.accountNo}",
-                        currentUser.username
+                        currentUser.username,
+                        currentUser.id
                     ))
                     updateNavigationHeader()
                 }

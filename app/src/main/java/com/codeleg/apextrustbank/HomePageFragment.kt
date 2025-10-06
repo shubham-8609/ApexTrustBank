@@ -5,16 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
+import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.HomePageItemsBinding
+import kotlinx.coroutines.launch
 
 class HomePageFragment : Fragment(), UserValueUpdateListener {
     private var _binding: HomePageItemsBinding? = null
     private val binding get() = _binding!!
     private var listener: UserValueUpdateListener? = null
+    private lateinit var tvLastTransaction: TextView
+    private lateinit var tvScLastTransaction: TextView
+    private lateinit var db: DBHelper
+    private lateinit var transactionDao: TransactionDao
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        db = DBHelper.getDB(requireContext())
+        transactionDao = db.transactionDao()
         if (context is UserValueUpdateListener) {
             listener = context
         }
@@ -25,7 +35,8 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = HomePageItemsBinding.inflate(inflater, container, false)
-
+        tvLastTransaction = binding.tvLastTransaction
+        tvScLastTransaction = binding.tvScLastTransaction
         binding.cardDeposit.setOnClickListener {
             val depositFragment = DepositFragment()
             depositFragment.setListener(this)
@@ -56,6 +67,19 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
             binding.tvBalance.text = it.getString(ARG_BALANCE)
             binding.tvAccountNo.text = it.getString(ARG_ACC_NO)
             binding.headingCardUserTitle.text = "Welcome, ${it.getString(ARG_USERNAME)} 👋"
+            lifecycleScope.launch {
+                val lastTransaction = transactionDao.getTransactionsByUser(it.getInt(ARG_USER_ID))
+                if (lastTransaction.size > 2) {
+                    binding.tvLastTransaction.text =
+                        "${lastTransaction[0].type}  ₹${lastTransaction[0].amount}"
+                    binding.tvScLastTransaction.text =
+                        "${lastTransaction[1].type} ₹${lastTransaction[1].amount}"
+                }else{
+                    binding.tvLastTransaction.visibility = View.GONE
+                    binding.tvScLastTransaction.visibility = View.GONE
+                }
+
+            }
         }
     }
 
@@ -77,14 +101,16 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
         private const val ARG_BALANCE = "balance"
         private const val ARG_ACC_NO = "acc_no"
         private const val ARG_USERNAME = "username"
+        private const val ARG_USER_ID = "user_id"
 
         @JvmStatic
-        fun newInstance(balance: String, accNo: String, username: String) =
+        fun newInstance(balance: String, accNo: String, username: String , userId: Int) =
             HomePageFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_BALANCE, balance)
                     putString(ARG_ACC_NO, accNo)
                     putString(ARG_USERNAME, username)
+                    putInt(ARG_USER_ID , userId)
                 }
             }
     }
