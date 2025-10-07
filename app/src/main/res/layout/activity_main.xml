@@ -1,4 +1,4 @@
-<androidx.drawerlayout.widget.DrawerLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/onPrimaryColor"
-    tools:openDrawer="start"
     tools:context=".MainActivity">
 
 
@@ -40,16 +39,17 @@
     </LinearLayout>
 
 
-    <!-- ✅ NavigationView must be LAST -->
-    <com.google.android.material.navigation.NavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="@dimen/_230sdp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         app:menu="@menu/navigation_menu"
-        app:itemTextAppearance="@style/DrawerItemDesign"
-        app:headerLayout="@layout/navigation_header" />
+        android:background="@drawable/toolbar_bg"
+        app:itemTextColor="@color/primaryColor"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:labelVisibilityMode="selected"
+/>
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

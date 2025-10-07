@@ -10,11 +10,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +23,8 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
+    private lateinit var rootLayout: CoordinatorLayout
+    private lateinit var navigationView: BottomNavigationView
     private lateinit var db: DBHelper
     private lateinit var userDao: UserDao
     private lateinit var currentUser: User
@@ -35,7 +36,6 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
         setContentView(binding.root)
         initViews()
         setupToolbar()
-        setupDrawer()
         setupNavigation()
         applyUserValues(savedInstanceState)
         setupBackPressHandler()
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
     }
 
     private fun initViews() {
-        drawerLayout = binding.main
+        rootLayout = binding.main
         navigationView = binding.navigationView
         db = DBHelper.getDB(this)
         userDao = db.userDao()
@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
+
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -80,20 +83,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
         return true
     }
 
-    private fun setupDrawer() {
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            binding.toolbarMainActivity,
-            R.string.open_drawer,
-            R.string.close_drawer
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-    }
-
     private fun setupNavigation() {
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        navigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home_page_option -> {
                     if (::currentUser.isInitialized) {
@@ -113,7 +104,6 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                 R.id.logout_option -> showLogoutDialog()
             }
             menuItem.isChecked = true
-            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
@@ -146,9 +136,6 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when {
-                    drawerLayout.isDrawerOpen(GravityCompat.START) ->
-                        drawerLayout.closeDrawer(GravityCompat.START)
-
                     !isHomeFragmentVisible() -> {
                         supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
                         if (::currentUser.isInitialized) {
@@ -190,7 +177,6 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                         currentUser.username,
                         currentUser.id
                     ))
-                    updateNavigationHeader()
                 }
             }
         } else {
@@ -198,18 +184,7 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
         }
     }
 
-    private fun updateNavigationHeader() {
-        val headerView = navigationView.getHeaderView(0)
-        val userNameTextView = headerView.findViewById<TextView>(R.id.txtUserName)
-        val accountNoTextView = headerView.findViewById<TextView>(R.id.txtAccountNo)
-        val balanceTextView = headerView.findViewById<TextView>(R.id.txtBalance)
 
-        if (::currentUser.isInitialized) {
-            userNameTextView.text = currentUser.username
-            accountNoTextView.text = "A/C: ${currentUser.accountNo}"
-            balanceTextView.text = "₹ ${currentUser.balance}"
-        }
-    }
 
     private fun showExitDialog() {
         val builder = AlertDialog.Builder(this)
@@ -249,7 +224,6 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     override fun onValueChanged() {
         applyUserValues(null)
-        updateNavigationHeader()
     }
 
 
