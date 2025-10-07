@@ -111,10 +111,10 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
     private fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = false) {
         supportFragmentManager.beginTransaction().apply {
             setCustomAnimations(
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right,
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
             )
             replace(R.id.main_container, fragment)
             if (addToBackStack) addToBackStack(null)
