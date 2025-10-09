@@ -12,6 +12,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class WithdrawFragment : BottomSheetDialogFragment() {
@@ -58,7 +59,7 @@ class WithdrawFragment : BottomSheetDialogFragment() {
 
     private fun withdrawLogic() {
         val user = currentUser!!
-        val amount = amountInput.text.toString().toDoubleOrNull()
+        val amount = amountInput.text.toString().toDouble()
         if (amount == null || amount <= 0) {
             amountInput.error = "Invalid amount"
         } else if (amount > 50000) {
@@ -71,11 +72,12 @@ class WithdrawFragment : BottomSheetDialogFragment() {
                 userDao.updateBalance(user.id , newBalance )
                 val transaction = Transaction(0 , user.id , amount , Date(), "Withdraw")
                 transactionDao.insertTransaction(transaction)
-                launch(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
+                    listener?.showNotification("An amount of ₹$amount has been  withdrawn from your account !")
                     listener?.onValueChanged()
+                    dismiss()
                 }
             }
-            dismiss()
         }
 
     }

@@ -1,22 +1,20 @@
 package com.codeleg.apextrustbank
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -97,7 +95,7 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                     } else {
                         replaceFragment(HomePageFragment(), false)
                     }
-                    updateToolbarTitle()
+
                 }
                 R.id.transaction_option -> replaceFragment(TransactionFragment(), true)
                 R.id.settings_option -> replaceFragment(SettingsFragment(), true)
@@ -120,17 +118,17 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
             if (addToBackStack) addToBackStack(null)
             commit()
         }
-        updateToolbarTitle()
+
     }
 
-    private fun updateToolbarTitle() {
-        supportActionBar?.title = when (supportFragmentManager.findFragmentById(R.id.main_container)) {
-            is HomePageFragment -> "Dashboard"
-            is TransactionFragment -> "Transaction History"
-            is SettingsFragment -> "Settings"
-            else -> "Apex Trust Bank"
-        }
-    }
+//    private fun updateToolbarTitle() {
+//        supportActionBar?.title = when (supportFragmentManager.findFragmentById(R.id.main_container)) {
+//            is HomePageFragment -> "Dashboard"
+//            is TransactionFragment -> "Transaction History"
+//            is SettingsFragment -> "Settings"
+//            else -> "Apex Trust Bank"
+//        }
+//    }
 
     private fun setupBackPressHandler() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -156,11 +154,10 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
     }
 
     private fun isHomeFragmentVisible(): Boolean =
-        supportFragmentManager.findFragmentById(R.id.main_container) is HomePageFragment
+        supportFragmentManager.backStackEntryCount == 0
 
     private fun setupFragmentListener() {
         supportFragmentManager.addOnBackStackChangedListener {
-            updateToolbarTitle()
         }
     }
 
@@ -215,6 +212,8 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
     }
 
     private fun logoutLogic(){
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
         PrefsManager.logout(this)
         val intent = Intent(applicationContext, AuthenticationActivity()::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -224,6 +223,10 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     override fun onValueChanged() {
         applyUserValues(null)
+    }
+
+    override fun showNotification(message: String) {
+        TODO("Not yet implemented")
     }
 
 

@@ -1,13 +1,20 @@
 package com.codeleg.apextrustbank
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.lifecycleScope
 import com.codeleg.apextrustbank.databinding.HomePageItemsBinding
 import kotlinx.coroutines.launch
@@ -20,6 +27,10 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
     private lateinit var tvScLastTransaction: TextView
     private lateinit var db: DBHelper
     private lateinit var transactionDao: TransactionDao
+    private  val TRANSACTION_CHANNEL_NAME = "Transactions"
+    private val TRANSACTION_CHANNEL_ID = "TRANSACTION_CHANNEL"
+    lateinit var  notificationManager: NotificationManager
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,6 +39,8 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
         if (context is UserValueUpdateListener) {
             listener = context
         }
+        notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        createNotificationChannel()
     }
 
     override fun onCreateView(
@@ -58,16 +71,17 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
                 .addToBackStack(null)
                 .commit()
         }
+        activity?.title = "Dashboard"
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
+            lifecycleScope.launch {
             binding.tvBalance.text = it.getString(ARG_BALANCE)
             binding.tvAccountNo.text = it.getString(ARG_ACC_NO)
             binding.headingCardUserTitle.text = "Welcome, ${it.getString(ARG_USERNAME)} 👋"
-            lifecycleScope.launch {
                 val lastTransaction = transactionDao.getTransactionsByUser(it.getInt(ARG_USER_ID))
                 if (lastTransaction.size > 2) {
                     binding.tvLastTransaction.text =
@@ -83,6 +97,11 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.app_name)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -93,8 +112,38 @@ class HomePageFragment : Fragment(), UserValueUpdateListener {
         listener = null
     }
 
+
+
     override fun onValueChanged() {
         listener?.onValueChanged()
+    }
+
+     override fun showNotification(message: String){
+        val intent = PendingIntent.getActivity(requireContext() , 0 , Intent(requireContext() ,
+            MainActivity::class.java) , PendingIntent.FLAG_IMMUTABLE)
+        val bitmapDrawable = ContextCompat.getDrawable(requireContext() , R.drawable.bank) as BitmapDrawable
+        val largeIcon = bitmapDrawable.bitmap
+        val notification = NotificationCompat.Builder(requireContext(), TRANSACTION_CHANNEL_ID).apply {
+            setSmallIcon(R.drawable.bank)
+            setLargeIcon(largeIcon)
+            setContentTitle("Transaction Alert")
+            setContentText(message)
+            setContentIntent(intent)
+            setAutoCancel(true)
+
+
+        }
+            .build()
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    private fun createNotificationChannel() {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(TRANSACTION_CHANNEL_ID , TRANSACTION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT)
+        notificationManager.createNotificationChannel(channel)
+        }
     }
 
     companion object {

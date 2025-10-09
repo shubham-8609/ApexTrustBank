@@ -127,7 +127,7 @@ class TransferFragment : BottomSheetDialogFragment() {
             transactionDao.insertTransaction(Transaction(0, recipient.id, amount, time, "Received"))
 
             withContext(Dispatchers.Main) {
-                DialogHelper.showSnacksbar(binding.root, "₹$amount transferred successfully!")
+                listener?.showNotification("An amount of ₹$amount transferred has been transferred to ${recipient.username}!")
                 listener?.onValueChanged()
                 dismiss() // close the bottom sheet
             }

@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class DepositFragment : BottomSheetDialogFragment() {
@@ -62,7 +63,7 @@ class DepositFragment : BottomSheetDialogFragment() {
 
     private fun depositLogic() {
         val user = currentUser!!
-        val amount = tvAmountInput.text.toString().toDoubleOrNull()
+        val amount = tvAmountInput.text.toString().toDouble()
         if (amount == null || amount <= 0) {
             tvAmountInput.error = "Invalid amount"
         } else if (amount > 50000) {
@@ -73,15 +74,15 @@ class DepositFragment : BottomSheetDialogFragment() {
                 userDao.updateBalance(user.id, user.balance + amount!!)
                 transactionDao.insertTransaction(
                     Transaction(
-                        0, user.id, amount!!, Date(), "Deposit"
+                        0, user.id, amount, Date(), "Deposit"
                     )
                 )
-                launch(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
+                    listener?.showNotification(" An amount o f₹$amount has been deposited  deposited to your account!")
                     listener?.onValueChanged()
+                    dismiss()
                 }
             }
-            dismiss()
-        }
         }
     }
-
+}

@@ -23,6 +23,7 @@
         <item name="colorError">@color/errorColor</item>
         <item name="colorOnError">@color/onErrorColor</item>
         <item name="android:fontFamily">@font/allerta_stencil</item>
+        <item name="android:statusBarColor">@color/secondaryColor</item>
     </style>
 
     <style name="Theme.ApexTrustBank" parent="Base.Theme.ApexTrustBank" />
