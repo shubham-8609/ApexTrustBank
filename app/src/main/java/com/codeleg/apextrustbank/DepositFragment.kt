@@ -78,7 +78,7 @@ class DepositFragment : BottomSheetDialogFragment() {
                     )
                 )
                 withContext(Dispatchers.Main) {
-                    listener?.showNotification(" An amount o f₹$amount has been deposited  deposited to your account!")
+                    listener?.showNotification(" An amount of ₹$amount has been deposited to your account!")
                     listener?.onValueChanged()
                     dismiss()
                 }

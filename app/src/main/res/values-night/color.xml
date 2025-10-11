@@ -28,6 +28,7 @@
     <color name="secondaryLightColor">#666666</color>
     <color name="toolbar_bg">#595959</color>
     <color name="secondaryDarkColor">#FF6F00</color>
+    <color name="card_bg">#26FF6F00</color>
 
 
 </resources>

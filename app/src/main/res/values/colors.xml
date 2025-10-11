@@ -27,7 +27,8 @@
         <color name="primaryDarkColor">#E65100</color>
         <color name="secondaryLightColor">#FFB300</color>
         <color name="secondaryDarkColor">#FF6F00</color>
-        <color name="toolbar_bg">#d9d9d9</color>
+        <color name="toolbar_bg">#74D9D9D9</color>
+        <color name="card_bg">#26FF6F00</color>
 
 
 </resources>

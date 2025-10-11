@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                             "Acc No: ${currentUser.accountNo}",
                             currentUser.username,
                             currentUser.id
-                        ), false)
+                        ), true)
                     } else {
                         replaceFragment(HomePageFragment(), false)
                     }
@@ -121,14 +121,9 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     }
 
-//    private fun updateToolbarTitle() {
-//        supportActionBar?.title = when (supportFragmentManager.findFragmentById(R.id.main_container)) {
-//            is HomePageFragment -> "Dashboard"
-//            is TransactionFragment -> "Transaction History"
-//            is SettingsFragment -> "Settings"
-//            else -> "Apex Trust Bank"
-//        }
-//    }
+    private fun updateToolbarTitle(title: String) {
+        supportActionBar?.title = title
+    }
 
     private fun setupBackPressHandler() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -146,6 +141,9 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
                         } else {
                             replaceFragment(HomePageFragment(), false)
                         }
+                        if (navigationView.selectedItemId != R.id.home_page_option){
+                            navigationView.selectedItemId = R.id.home_page_option
+                        }
                     }
                     else -> showExitDialog()
                 }
@@ -158,6 +156,13 @@ class MainActivity : AppCompatActivity() , UserValueUpdateListener {
 
     private fun setupFragmentListener() {
         supportFragmentManager.addOnBackStackChangedListener {
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.main_container)
+            when(currentFragment!!::class.java.simpleName){
+                "HomePageFragment" -> updateToolbarTitle("Dashboard")
+                "TransactionFragment" -> updateToolbarTitle("Transactions")
+                "SettingsFragment" -> updateToolbarTitle("Settings")
+
+            }
         }
     }
 

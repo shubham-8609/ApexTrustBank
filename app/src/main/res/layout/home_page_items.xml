@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/onPrimaryColor"
+    android:background="@drawable/background"
     android:padding="@dimen/_10sdp">
 
     <LinearLayout
@@ -89,6 +89,7 @@
                     android:layout_height="@dimen/_130sdp"
                     android:layout_columnWeight="1"
                     android:clickable="true"
+                    app:cardBackgroundColor="@color/card_bg"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="@dimen/_16sdp"
                     app:cardElevation="@dimen/_4sdp"
@@ -98,6 +99,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -124,6 +126,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_130sdp"
                     android:layout_columnWeight="1"
+                    app:cardBackgroundColor="@color/card_bg"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="@dimen/_16sdp"
@@ -140,7 +143,7 @@
                         <ImageView
                             android:layout_width="@dimen/_60sdp"
                             android:layout_height="@dimen/_60sdp"
-                            android:src="@drawable/withdraw "
+                            android:src="@drawable/withdraw"
                             app:tint="@color/primaryColor" />
 
                         <TextView
@@ -158,6 +161,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_transfer"
                     android:layout_width="0dp"
+                    app:cardBackgroundColor="@color/card_bg"
                     android:layout_height="@dimen/_130sdp"
                     android:layout_columnWeight="1"
                     android:clickable="true"
@@ -197,6 +201,7 @@
                     android:layout_height="@dimen/_130sdp"
                     android:layout_columnWeight="1"
                     android:clickable="true"
+                    app:cardBackgroundColor="@color/card_bg"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="@dimen/_16sdp"
                     app:cardElevation="@dimen/_4sdp"
@@ -236,7 +241,7 @@
             android:text="Recent Transactions"
             android:textStyle="bold"
             android:textSize="@dimen/_16ssp"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryColor"
             android:layout_marginTop="@dimen/_20sdp" />
 
         <LinearLayout
@@ -252,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:text="• Paid ₹500 to Amazon"
                 android:textSize="@dimen/_14ssp"
-                android:textColor="@color/black"
+                android:textColor="@color/primaryColor"
                 android:padding="@dimen/_6sdp" />
 
             <TextView
@@ -260,8 +265,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="• Received ₹1200 from Rahul"
+                android:textColor="@color/primaryColor"
                 android:textSize="@dimen/_14ssp"
-                android:textColor="@color/black"
                 android:padding="@dimen/_6sdp" />
 
         </LinearLayout>
